@@ -43,14 +43,14 @@ module.exports = [
     '@vuepress-reco/vuepress-plugin-back-to-top'
     // 'go-top'
   ],
-  [
-    '@vuepress/google-analytics',
-    {
-      ga: secret.ga
-      // github actions
-      // 'ga': process.env.GA
-    }
-  ],
+  // [
+  //   '@vuepress/google-analytics',
+  //   {
+  //     ga: secret.ga
+  //     // github actions
+  //     // 'ga': process.env.GA
+  //   }
+  // ],
   [
     '@vuepress/medium-zoom',
     {

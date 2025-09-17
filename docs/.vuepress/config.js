@@ -22,14 +22,14 @@ module.exports = {
     type: 'blog',
     logo: '/assets/img/logo.png',
     authorAvatar: '/assets/img/avatar.jpg',
-    valineConfig: {
-      appId: secret.appId,
-      appKey: secret.appKey,
-      // visitor: true // 阅读量统计
-      // github actions
-      // appId: JSON.stringify(process.env.VALINE_APPID),
-      // appKey: JSON.stringify(process.env.VALINE_APPKEY)
-    },
+    // valineConfig: {
+    //   appId: secret.appId,
+    //   appKey: secret.appKey,
+    //   // visitor: true // 阅读量统计
+    //   // github actions
+    //   // appId: JSON.stringify(process.env.VALINE_APPID),
+    //   // appKey: JSON.stringify(process.env.VALINE_APPKEY)
+    // },
 
     // vssueConfig: {
     // 	platform: 'github-v4',
@@ -76,12 +76,12 @@ module.exports = {
     ],
     noFoundPageByTencent: false, // 404 腾讯公益
     // 备案
-    record: '京ICP备20029652号',
-    recordLink: 'http://www.beian.miit.gov.cn',
-    // cyberSecurityRecord: '京公网安备',
-    // cyberSecurityLink: '公安部备案指向链接',
-    // // 项目开始时间，只填写年份
-    startYear: '2019'
+    // record: '京ICP备20029652号',
+    // recordLink: 'http://www.beian.miit.gov.cn',
+    // // cyberSecurityRecord: '京公网安备',
+    // // cyberSecurityLink: '公安部备案指向链接',
+    // // // 项目开始时间，只填写年份
+    // startYear: '2019'
   },
   //vuepress-theme-reco 第三方主题配置
   theme: 'reco',

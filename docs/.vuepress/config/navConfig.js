@@ -4,29 +4,29 @@ module.exports = [
 		link: "/",
 		icon: "reco-home",
 	},
-	{
-		text: "新闻",
-		items: [
-			{
-				text: "",
-				items: [
-					{
-						text: "全球财经",
-						link: "https://news.dodolo.top",
-					},
-					{
-						text: "新冠疫情",
-						link: "https://covid.dodolo.top",
-					},
-					{
-						text: "InfoQ",
-						link: "https://www.infoq.cn",
-					},
-				],
-			},
-		],
-		icon: "reco-blog",
-	},
+	// {
+	// 	text: "新闻",
+	// 	items: [
+	// 		{
+	// 			text: "",
+	// 			items: [
+	// 				{
+	// 					text: "全球财经",
+	// 					link: "https://news.dodolo.top",
+	// 				},
+	// 				{
+	// 					text: "新冠疫情",
+	// 					link: "https://covid.dodolo.top",
+	// 				},
+	// 				{
+	// 					text: "InfoQ",
+	// 					link: "https://www.infoq.cn",
+	// 				},
+	// 			],
+	// 		},
+	// 	],
+	// 	icon: "reco-blog",
+	// },
 	{
 		text: "分类",
 		items: [
@@ -84,11 +84,11 @@ module.exports = [
 			{
 				text: "",
 				items: [
-					{
-						text: "Gitee",
-						link: "https://gitee.com/tienouc",
-						icon: "reco-mayun",
-					},
+					// {
+					// 	text: "Gitee",
+					// 	link: "https://gitee.com/tienouc",
+					// 	icon: "reco-mayun",
+					// },
 					{
 						text: "Github",
 						link: "https://github.com/TienOUC",
