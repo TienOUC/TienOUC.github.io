@@ -14,12 +14,14 @@ jobs:
       - name: 安装 Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20.x
+          node-version: 16.19.0
 
       - name: 安装依赖并构建
         run: |
+          npm install -g yarn
+          yarn config set strict-ssl false  # 临时关闭严格的 SSL 验证
           yarn install
-          yarn run build  # 生成 dist 目录
+          yarn build
 
       - name: 部署到 main 分支
         uses: peaceiris/actions-gh-pages@v4
