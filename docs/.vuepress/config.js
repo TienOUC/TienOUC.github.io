@@ -81,7 +81,7 @@ module.exports = {
     // // cyberSecurityRecord: '京公网安备',
     // // cyberSecurityLink: '公安部备案指向链接',
     // // // 项目开始时间，只填写年份
-    // startYear: '2019'
+    startYear: '2019'
   },
   //vuepress-theme-reco 第三方主题配置
   theme: 'reco',
