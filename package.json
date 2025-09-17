@@ -6,10 +6,8 @@
   "homepage": "https://TienOUC.github.io/vuepress",
   "scripts": {
     "dev": "vuepress dev docs",
-    "build": "vuepress build docs",
-    "postbuild": "scp -r docs/.vuepress/dist/* Tien:/home/ubuntu/vuepress",
-    "deploy": "bash deploy.sh",
-    "cname": "bash cname.sh"
+    "build": "vuepress build docs"
+
   },
   "repository": {
     "type": "git",
