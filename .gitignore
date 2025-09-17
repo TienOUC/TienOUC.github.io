@@ -110,7 +110,7 @@ dist
 # Hide vscode config
 .vscode
 .idea
-.github/
+# .github/
 
 # ignore folder
 algorithm
