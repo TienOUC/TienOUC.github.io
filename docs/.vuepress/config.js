@@ -39,14 +39,14 @@ module.exports = {
     // 	clientSecret: secret.clientSecret,
     // },
     friendLink: [
-      {
-        title: '稚晖的个人小站',
-        desc: '十年饮冰，难凉热血',
-        // logo: 'http://www.pengzhihui.xyz/favicon.png',
-        logo:
-          'https://tva1.sinaimg.cn/large/008eGmZEgy1gpfmx6j8khj303k03k3yn.jpg',
-        link: 'http://www.pengzhihui.xyz/archives/'
-      },
+      // {
+      //   title: '稚晖的个人小站',
+      //   desc: '十年饮冰，难凉热血',
+      //   // logo: 'http://www.pengzhihui.xyz/favicon.png',
+      //   logo:
+      //     'https://tva1.sinaimg.cn/large/008eGmZEgy1gpfmx6j8khj303k03k3yn.jpg',
+      //   link: 'http://www.pengzhihui.xyz/archives/'
+      // },
       {
         title: '阮一峰',
         desc: '阮一峰的网络日志',
