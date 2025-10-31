@@ -34,7 +34,7 @@ console.log(typeof function() {}); // function
 
 ```js
 let a = [],
-	b = {};
+  b = {};
 console.log(a instanceof Array); // true
 console.log(a instanceof Object); // true    👈  数组也是对象，所以为true
 console.log(b instanceof Object); // true
@@ -159,6 +159,8 @@ let arr = []
 
 其调用顺序是 **调用栈清空后 ——> 立即执行微任务队列（处理期间新加入的微任务也会一同执行） ——> 执行消息队列**
 
+[动画模拟](http://latentflip.com/loupe/?code=JC5vbignYnV0dG9uJywgJ2NsaWNrJywgZnVuY3Rpb24gb25DbGljaygpIHsKICAgIGNvbnNvbGUubG9nKCJmdWNrIik7CiAgICBjb25zb2xlLmxvZygiZnVjayBwbHVzIik7CiAgICBzZXRUaW1lb3V0KGZ1bmN0aW9uIHRpbWVyKCkgewogICAgICAgIGNvbnNvbGUubG9nKCdZb3UgY2xpY2tlZCB0aGUgYnV0dG9uIScpOyAgICAKICAgIH0sIDIwMDApOwp9KTsKCmZ1bmN0aW9uIGxvb3Aobil7CiAgICBmb3IobGV0IGkgPSAwO2kgPCBuOyBpKyspewogICAgICAgIGNvbnNvbGUubG9nKCJIaSEiKTsKICAgIH0KfQoKY29uc29sZS5sb2coIkhpISIpOwoKbG9vcCgzKTsKCnNldFRpbWVvdXQoZnVuY3Rpb24gdGltZW91dCgpIHsKICAgIGNvbnNvbGUubG9nKCJDbGljayB0aGUgYnV0dG9uISIpOwp9LCA1MDAwKTsKCmxvb3AoNSk7Cgpjb25zb2xlLmxvZygiV2VsY29tZSB0byBsb3VwZS4iKTs%3D!!!PGJ1dHRvbj5DbGljayBtZSE8L2J1dHRvbj4%3D)
+
 ## 2. CSS
 
 ### 2.1 import / link 区别
@@ -197,11 +199,12 @@ css 样式表引入的方式有 4 种：
 - **最优的@import 书写方式**
 
 ```css
-@import 'style.css' //Windows IE4/ NS4, Mac OS X IE5, Macintosh IE4/IE5/NS4不识别
-	@import 'style.css' //Windows IE4/ NS4, Macintosh IE4/NS4不识别
-	@import url(style.css) //Windows NS4, Macintosh NS4不识别
-	@import url('style.css') //Windows NS4, Mac OS X IE5, Macintosh IE4/IE5/NS4不识别
-	@import url('style.css');
+@import 'style.css'
+  //Windows IE4/ NS4, Mac OS X IE5, Macintosh IE4/IE5/NS4不识别
+  @import 'style.css' //Windows IE4/ NS4, Macintosh IE4/NS4不识别
+  @import url(style.css) //Windows NS4, Macintosh NS4不识别
+  @import url('style.css') //Windows NS4, Mac OS X IE5, Macintosh IE4/IE5/NS4不识别
+  @import url('style.css');
 ```
 
 由上分析知道，`@import url(style.css)` 和 `@import url（"style.css"）` 是最优的选择，兼容的浏览器最多。从字节优化的角度来看 `@import url(style.css)` 最值得推荐。
@@ -300,12 +303,12 @@ time,
 mark,
 audio,
 video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
 article,
@@ -319,29 +322,29 @@ hgroup,
 menu,
 nav,
 section {
-	display: block;
+  display: block;
 }
 body {
-	line-height: 1;
+  line-height: 1;
 }
 ol,
 ul {
-	list-style: none;
+  list-style: none;
 }
 blockquote,
 q {
-	quotes: none;
+  quotes: none;
 }
 blockquote:before,
 blockquote:after,
 q:before,
 q:after {
-	content: '';
-	content: none;
+  content: '';
+  content: none;
 }
 table {
-	border-collapse: collapse;
-	border-spacing: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 ```
 
@@ -425,17 +428,17 @@ time,
 mark,
 audio,
 video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	outline: 0;
-	font-size: 100%;
-	vertical-align: baseline;
-	background: transparent;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
 }
 
 body {
-	line-height: 1;
+  line-height: 1;
 }
 
 article,
@@ -449,77 +452,77 @@ hgroup,
 menu,
 nav,
 section {
-	display: block;
+  display: block;
 }
 
 nav ul {
-	list-style: none;
+  list-style: none;
 }
 
 blockquote,
 q {
-	quotes: none;
+  quotes: none;
 }
 
 blockquote:before,
 blockquote:after,
 q:before,
 q:after {
-	content: '';
-	content: none;
+  content: '';
+  content: none;
 }
 
 a {
-	margin: 0;
-	padding: 0;
-	font-size: 100%;
-	vertical-align: baseline;
-	background: transparent;
+  margin: 0;
+  padding: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
 }
 
 /* change colours to suit your needs */
 ins {
-	background-color: #ff9;
-	color: #000;
-	text-decoration: none;
+  background-color: #ff9;
+  color: #000;
+  text-decoration: none;
 }
 
 /* change colours to suit your needs */
 mark {
-	background-color: #ff9;
-	color: #000;
-	font-style: italic;
-	font-weight: bold;
+  background-color: #ff9;
+  color: #000;
+  font-style: italic;
+  font-weight: bold;
 }
 
 del {
-	text-decoration: line-through;
+  text-decoration: line-through;
 }
 
 abbr[title],
 dfn[title] {
-	border-bottom: 1px dotted;
-	cursor: help;
+  border-bottom: 1px dotted;
+  cursor: help;
 }
 
 table {
-	border-collapse: collapse;
-	border-spacing: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 
 /* change border colour to suit your needs */
 hr {
-	display: block;
-	height: 1px;
-	border: 0;
-	border-top: 1px solid #cccccc;
-	margin: 1em 0;
-	padding: 0;
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #cccccc;
+  margin: 1em 0;
+  padding: 0;
 }
 
 input,
 select {
-	vertical-align: middle;
+  vertical-align: middle;
 }
 ```
 
@@ -533,8 +536,8 @@ Licensed under the BSD License.
 http://yuilibrary.com/license/
 */
 html {
-	color: #000;
-	background: #fff;
+  color: #000;
+  background: #fff;
 }
 body,
 div,
@@ -561,16 +564,16 @@ p,
 blockquote,
 th,
 td {
-	margin: 0;
-	padding: 0;
+  margin: 0;
+  padding: 0;
 }
 table {
-	border-collapse: collapse;
-	border-spacing: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 fieldset,
 img {
-	border: 0;
+  border: 0;
 }
 address,
 caption,
@@ -581,16 +584,16 @@ em,
 strong,
 th,
 var {
-	font-style: normal;
-	font-weight: normal;
+  font-style: normal;
+  font-weight: normal;
 }
 ol,
 ul {
-	list-style: none;
+  list-style: none;
 }
 caption,
 th {
-	text-align: left;
+  text-align: left;
 }
 h1,
 h2,
@@ -598,38 +601,38 @@ h3,
 h4,
 h5,
 h6 {
-	font-size: 100%;
-	font-weight: normal;
+  font-size: 100%;
+  font-weight: normal;
 }
 q:before,
 q:after {
-	content: '';
+  content: '';
 }
 abbr,
 acronym {
-	border: 0;
-	font-variant: normal;
+  border: 0;
+  font-variant: normal;
 }
 sup {
-	vertical-align: text-top;
+  vertical-align: text-top;
 }
 sub {
-	vertical-align: text-bottom;
+  vertical-align: text-bottom;
 }
 input,
 textarea,
 select {
-	font-family: inherit;
-	font-size: inherit;
-	font-weight: inherit;
-	*font-size: 100%;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  *font-size: 100%;
 }
 legend {
-	color: #000;
+  color: #000;
 }
 
 #yui3-css-stamp.cssreset {
-	display: none;
+  display: none;
 }
 ```
 
@@ -638,8 +641,8 @@ legend {
 ```css
 /* cssreset.com */
 * {
-	margin: 0;
-	padding: 0;
+  margin: 0;
+  padding: 0;
 }
 ```
 
@@ -767,11 +770,11 @@ OSI 七层模型记忆
 
 ```css
 p {
-	color: #00ff00;
-	_color: #000000;
+  color: #00ff00;
+  _color: #000000;
 }
 * + html p {
-	color: #ff0000;
+  color: #ff0000;
 }
 ```
 

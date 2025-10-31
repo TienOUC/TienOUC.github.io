@@ -57,12 +57,18 @@ module.exports = [
 				],
 			},
 			{
+				text: "大模型",
+				items: [
+					{ text: "LLM知识归纳", link: "/pages/llm/" }
+				],
+			},
+			{
 				text: "其他",
 				items: [
 					{ text: "工具类", link: "/pages/gear/" },
 					{ text: "自动化", link: "/pages/automator/" },
 					{ text: "小程序", link: "/pages/miniprogram/" },
-					{ text: "小总结", link: "/pages/summary/" },
+					{ text: "小总结", link: "/pages/summary/" }
 				],
 			},
 		],
