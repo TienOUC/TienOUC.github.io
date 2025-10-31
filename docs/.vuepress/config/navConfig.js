@@ -100,11 +100,11 @@ module.exports = [
 						link: "https://github.com/TienOUC",
 						icon: "reco-github",
 					},
-					{
-						text: "TextMe",
-						link: "/pages/contact/",
-						icon: "reco-suggestion",
-					},
+					// {
+					// 	text: "TextMe",
+					// 	link: "/pages/contact/",
+					// 	icon: "reco-suggestion",
+					// },
 					// { text: '关于我', link: '/pages/about/', icon: 'reco-faq' }
 				],
 			},
