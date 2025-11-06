@@ -85,30 +85,9 @@ module.exports = [
 		icon: "reco-date",
 	},
 	{
-		text: "联系我",
-		items: [
-			{
-				text: "",
-				items: [
-					// {
-					// 	text: "Gitee",
-					// 	link: "https://gitee.com/tienouc",
-					// 	icon: "reco-mayun",
-					// },
-					{
-						text: "Github",
-						link: "https://github.com/TienOUC",
-						icon: "reco-github",
-					},
-					// {
-					// 	text: "TextMe",
-					// 	link: "/pages/contact/",
-					// 	icon: "reco-suggestion",
-					// },
-					// { text: '关于我', link: '/pages/about/', icon: 'reco-faq' }
-				],
-			},
-		],
-		icon: "reco-account",
+		text: "Github",
+		link: "https://github.com/TienOUC",
+		icon: "reco-github",
+		// icon: "reco-account",
 	},
 ];

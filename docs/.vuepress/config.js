@@ -38,42 +38,42 @@ module.exports = {
     // 	clientId: secret.clientId,
     // 	clientSecret: secret.clientSecret,
     // },
-    friendLink: [
-      // {
-      //   title: '稚晖的个人小站',
-      //   desc: '十年饮冰，难凉热血',
-      //   // logo: 'http://www.pengzhihui.xyz/favicon.png',
-      //   logo:
-      //     'https://tva1.sinaimg.cn/large/008eGmZEgy1gpfmx6j8khj303k03k3yn.jpg',
-      //   link: 'http://www.pengzhihui.xyz/archives/'
-      // },
-      {
-        title: '阮一峰',
-        desc: '阮一峰的网络日志',
-        // logo: 'http://www.ruanyifeng.com/favicon.ico',
-        logo:
-          'https://tva1.sinaimg.cn/large/008eGmZEgy1gpfmx8wr8hj300w00wa9t.jpg',
-        link: 'http://www.ruanyifeng.com/blog/'
-      },
-      // {
-      //   title: '峰华前端工程师',
-      //   desc: 'Hello! 我是张旭乾',
-      //   logo: 'https://zxuqian.cn/img/favicon.ico',
-      //   link: 'https://zxuqian.cn/'
-      // },
-      // {
-      //   title: '青春永不落幕',
-      //   desc: '一位网页设计和收集Windows平台软件的爱好者',
-      //   logo: 'https://qcyblm.github.io/favicon.ico',
-      //   link: 'https://qcyblm.github.io/'
-      // }
-      // {
-      // 	title: 'vuepress-theme-reco',
-      // 	desc: '一款简约的VuePress博客&文档主题',
-      // 	logo: 'https://tva1.sinaimg.cn/large/008i3skNgy1gqlm89wvpyj301s01sgld.jpg',
-      // 	link: 'https://vuepress-theme-reco.recoluan.com',
-      // },
-    ],
+    // friendLink: [
+    //   // {
+    //   //   title: '稚晖的个人小站',
+    //   //   desc: '十年饮冰，难凉热血',
+    //   //   // logo: 'http://www.pengzhihui.xyz/favicon.png',
+    //   //   logo:
+    //   //     'https://tva1.sinaimg.cn/large/008eGmZEgy1gpfmx6j8khj303k03k3yn.jpg',
+    //   //   link: 'http://www.pengzhihui.xyz/archives/'
+    //   // },
+    //   {
+    //     title: '阮一峰',
+    //     desc: '阮一峰的网络日志',
+    //     // logo: 'http://www.ruanyifeng.com/favicon.ico',
+    //     logo:
+    //       'https://tva1.sinaimg.cn/large/008eGmZEgy1gpfmx8wr8hj300w00wa9t.jpg',
+    //     link: 'http://www.ruanyifeng.com/blog/'
+    //   },
+    //   // {
+    //   //   title: '峰华前端工程师',
+    //   //   desc: 'Hello! 我是张旭乾',
+    //   //   logo: 'https://zxuqian.cn/img/favicon.ico',
+    //   //   link: 'https://zxuqian.cn/'
+    //   // },
+    //   // {
+    //   //   title: '青春永不落幕',
+    //   //   desc: '一位网页设计和收集Windows平台软件的爱好者',
+    //   //   logo: 'https://qcyblm.github.io/favicon.ico',
+    //   //   link: 'https://qcyblm.github.io/'
+    //   // }
+    //   // {
+    //   // 	title: 'vuepress-theme-reco',
+    //   // 	desc: '一款简约的VuePress博客&文档主题',
+    //   // 	logo: 'https://tva1.sinaimg.cn/large/008i3skNgy1gqlm89wvpyj301s01sgld.jpg',
+    //   // 	link: 'https://vuepress-theme-reco.recoluan.com',
+    //   // },
+    // ],
     noFoundPageByTencent: false, // 404 腾讯公益
     // 备案
     // record: '京ICP备20029652号',
