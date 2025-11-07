@@ -5,7 +5,7 @@ date: 2025-01-01
 categories:
   - LLM
 tags:
-  - LLM MCP、Agent
+  - LLM/MCP/Agent
 ---
 
 ## 1. 什么是 Prompt?
