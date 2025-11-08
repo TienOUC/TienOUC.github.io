@@ -68,6 +68,8 @@ tags:
 
 ## 技术实现
 
+![](https://cdn.jsdelivr.net/gh/tienouc/blog-img/20251108201424449.webp)
+
 ### 翻译 API 优先级
 
 - **百度翻译（首选）**：`https://api.fanyi.baidu.com/api/trans/vip/translate`
