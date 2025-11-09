@@ -14,7 +14,7 @@ tags:
 
 一个简单易用的 Chrome 浏览器插件，支持页面划词翻译功能，实现中英文自动互译。[Github 仓库链接](https://github.com/TienOUC/translate-plugin)
 
-![](https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/142cd5add75b41719c43513c8faf19f6~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAg6Zu25Y-35py6:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNzM0ODg5MzMyNzA1NjA4In0%3D&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1763208100&x-orig-sign=wOgFWmke2vVazBINU9yHeK4f8LA%3D)
+![](https://cdn.jsdelivr.net/gh/tienouc/blog-img/20251108192416345.gif)
 
 ## 功能特点
 
