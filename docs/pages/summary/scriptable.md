@@ -3,6 +3,7 @@ autoGroup-2: 趣味应用
 title: Scriptable
 date: 2021-10-03
 isTimeLine: true
+sticky: 1
 categories:
   - Application
 tags:
@@ -71,8 +72,8 @@ var calendar = await Calendar.forEvents();
 //获取日历名和对应的日历
 var m_dict = {};
 for (cal of calendar) {
-	m_dict[cal.title] = cal;
-	//console.log(`日历:${cal.title}`)
+  m_dict[cal.title] = cal;
+  //console.log(`日历:${cal.title}`)
 }
 
 const events = await CalendarEvent.between(startDate, endDate, calendar);
@@ -80,118 +81,118 @@ console.log(`获取 ${events.length} 条日历`);
 console.log(events);
 
 for (const reminder of reminders) {
-	reminder.notes =
-		!reminder.notes || reminder.notes == null || reminder.notes == "undefined"
-			? "无"
-			: reminder.notes;
-	//reminder的标识符
-	const targetNote = `[Reminder ID] ${reminder.identifier}`;
-	const [targetEvent] = events.filter(
-		(e) => e.notes != null && e.notes.indexOf(targetNote) != -1
-	); //过滤重复的reminder
-	if (!m_dict[reminder.calendar.title]) {
-		console.warn("找不到日历" + reminder.calendar.title);
-		continue;
-	}
-	if (targetEvent) {
-		//console.log(`找到已经创建的事项 ${reminder.title}`)
-		updateEvent(targetEvent, reminder);
-	} else {
-		console.warn(`创建事项 ${reminder.title} 到 ${reminder.calendar.title}`);
-		const newEvent = new CalendarEvent();
-		newEvent.notes = reminder.notes + "\n\n" + targetNote; //要加入备注
-		updateEvent(newEvent, reminder);
-	}
+  reminder.notes =
+    !reminder.notes || reminder.notes == null || reminder.notes == 'undefined'
+      ? '无'
+      : reminder.notes;
+  //reminder的标识符
+  const targetNote = `[Reminder ID] ${reminder.identifier}`;
+  const [targetEvent] = events.filter(
+    (e) => e.notes != null && e.notes.indexOf(targetNote) != -1
+  ); //过滤重复的reminder
+  if (!m_dict[reminder.calendar.title]) {
+    console.warn('找不到日历' + reminder.calendar.title);
+    continue;
+  }
+  if (targetEvent) {
+    //console.log(`找到已经创建的事项 ${reminder.title}`)
+    updateEvent(targetEvent, reminder);
+  } else {
+    console.warn(`创建事项 ${reminder.title} 到 ${reminder.calendar.title}`);
+    const newEvent = new CalendarEvent();
+    newEvent.notes = reminder.notes + '\n\n' + targetNote; //要加入备注
+    updateEvent(newEvent, reminder);
+  }
 }
 
 Script.complete();
 
 //设置period
 function setPeriod(event, period, description) {
-	const supplement =
-		description == "延期" || description == "提前" ? "完成" : "";
-	if (period < 3600) {
-		return (subHeading =
-			Math.floor((period / 60).toFixed(1)) == 0
-				? `准时完成`
-				: `${description}${(period / 60).toFixed()}分钟${supplement}`);
-	} else if (period >= 3600 && period <= 3600 * 24) {
-		return (subHeading =
-			((period % 3600) / 60).toFixed() == 0
-				? `${description}${(period / 3600).toFixed()}小时${supplement}`
-				: `${description}${Math.floor((period / 3600).toFixed(2))}小时${(
-						(period % 3600) /
-						60
-				  ).toFixed()}分钟${supplement}`);
-	} else {
-		return (subHeading =
-			((period % (3600 * 24)) / 3600).toFixed() == 0
-				? `${description}${(period / 3600 / 24).toFixed()}天${supplement}`
-				: `${description}${(period / 3600 / 24).toFixed()}天${(
-						(period % (3600 * 24)) /
-						3600
-				  ).toFixed()}小时${supplement}`);
-	}
+  const supplement =
+    description == '延期' || description == '提前' ? '完成' : '';
+  if (period < 3600) {
+    return (subHeading =
+      Math.floor((period / 60).toFixed(1)) == 0
+        ? `准时完成`
+        : `${description}${(period / 60).toFixed()}分钟${supplement}`);
+  } else if (period >= 3600 && period <= 3600 * 24) {
+    return (subHeading =
+      ((period % 3600) / 60).toFixed() == 0
+        ? `${description}${(period / 3600).toFixed()}小时${supplement}`
+        : `${description}${Math.floor((period / 3600).toFixed(2))}小时${(
+            (period % 3600) /
+            60
+          ).toFixed()}分钟${supplement}`);
+  } else {
+    return (subHeading =
+      ((period % (3600 * 24)) / 3600).toFixed() == 0
+        ? `${description}${(period / 3600 / 24).toFixed()}天${supplement}`
+        : `${description}${(period / 3600 / 24).toFixed()}天${(
+            (period % (3600 * 24)) /
+            3600
+          ).toFixed()}小时${supplement}`);
+  }
 }
 
 //日历中创建提醒
 function updateEvent(event, reminder) {
-	cal_name = reminder.calendar.title;
-	cal = m_dict[cal_name];
-	event.calendar = cal;
-	// console.warn(event.calendar.title)
-	// 已完成事项
-	if (reminder.isCompleted) {
-		event.isAllDay = false;
-		event.startDate = reminder.dueDate;
-		event.endDate = reminder.completionDate;
-		var period = (reminder.dueDate - reminder.completionDate) / 1000;
-		period = period.toFixed();
-		if (period < 0) {
-			period = -period;
-			let titleTail = setPeriod(event, period, "延期");
-			event.title = `✅${reminder.title} (${titleTail})`;
-		} else if (period == 0) {
-			event.title = `✅${reminder.title} (准时完成)`;
-		} else {
-			let titleTail = setPeriod(event, period, "提前");
-			event.title = `✅${reminder.title} (${titleTail})`;
-			event.endDate = reminder.dueDate;
-			event.startDate = reminder.completionDate;
-		}
-	}
-	// 未完成事项
-	else {
-		const nowtime = new Date();
-		var period = (reminder.dueDate - nowtime) / 1000;
-		period = period.toFixed();
-		if (period < 0) {
-			// 待办顺延
-			period = -period;
-			let titleTail = setPeriod(event, period, "已延期");
-			// 如果不是在同一天,设置为全天事项
-			if (reminder.dueDate.getDate() != nowtime.getDate()) {
-				event.title = `❌${reminder.title} (${titleTail})`;
-				event.startDate = nowtime;
-				event.endDate = nowtime;
-				event.isAllDay = true;
-			}
-			// 在同一天的保持原来的时间
-			else {
-				event.title = `⭕️${reminder.title} (${titleTail})`;
-				event.isAllDay = false;
-				event.startDate = reminder.dueDate;
-				event.endDate = nowtime;
-			}
-		} else {
-			event.isAllDay = false;
-			let titleTail = setPeriod(event, period, "还剩");
-			event.title = `⭕️${reminder.title} (${titleTail})`;
-			event.startDate = reminder.dueDate;
-			event.endDate = reminder.dueDate;
-		}
-	}
-	event.save();
+  cal_name = reminder.calendar.title;
+  cal = m_dict[cal_name];
+  event.calendar = cal;
+  // console.warn(event.calendar.title)
+  // 已完成事项
+  if (reminder.isCompleted) {
+    event.isAllDay = false;
+    event.startDate = reminder.dueDate;
+    event.endDate = reminder.completionDate;
+    var period = (reminder.dueDate - reminder.completionDate) / 1000;
+    period = period.toFixed();
+    if (period < 0) {
+      period = -period;
+      let titleTail = setPeriod(event, period, '延期');
+      event.title = `✅${reminder.title} (${titleTail})`;
+    } else if (period == 0) {
+      event.title = `✅${reminder.title} (准时完成)`;
+    } else {
+      let titleTail = setPeriod(event, period, '提前');
+      event.title = `✅${reminder.title} (${titleTail})`;
+      event.endDate = reminder.dueDate;
+      event.startDate = reminder.completionDate;
+    }
+  }
+  // 未完成事项
+  else {
+    const nowtime = new Date();
+    var period = (reminder.dueDate - nowtime) / 1000;
+    period = period.toFixed();
+    if (period < 0) {
+      // 待办顺延
+      period = -period;
+      let titleTail = setPeriod(event, period, '已延期');
+      // 如果不是在同一天,设置为全天事项
+      if (reminder.dueDate.getDate() != nowtime.getDate()) {
+        event.title = `❌${reminder.title} (${titleTail})`;
+        event.startDate = nowtime;
+        event.endDate = nowtime;
+        event.isAllDay = true;
+      }
+      // 在同一天的保持原来的时间
+      else {
+        event.title = `⭕️${reminder.title} (${titleTail})`;
+        event.isAllDay = false;
+        event.startDate = reminder.dueDate;
+        event.endDate = nowtime;
+      }
+    } else {
+      event.isAllDay = false;
+      let titleTail = setPeriod(event, period, '还剩');
+      event.title = `⭕️${reminder.title} (${titleTail})`;
+      event.startDate = reminder.dueDate;
+      event.endDate = reminder.dueDate;
+    }
+  }
+  event.save();
 }
 ```
 
@@ -244,141 +245,141 @@ var calendar = await Calendar.forEvents();
 //获取日历名和对应的日历
 var m_dict = {};
 for (cal of calendar) {
-	m_dict[cal.title] = cal;
-	//console.log(`日历:${cal.title}`)
+  m_dict[cal.title] = cal;
+  //console.log(`日历:${cal.title}`)
 }
 
 const events = await CalendarEvent.between(startDate, endDate, calendar);
 console.log(`获取 ${events.length} 条日历`);
 
 for (const reminder of reminders) {
-	reminder.notes =
-		!reminder.notes || reminder.notes == null || reminder.notes == "undefined"
-			? "无"
-			: reminder.notes;
-	//const targetNote = `[Reminder] ${reminder.identifier}`
-	const options = { year: "numeric", month: "2-digit", day: "2-digit" };
-	// 备注中要添加的提醒事项创建时间
-	const _creationDate = reminder.creationDate
-		.toLocaleTimeString("zh-CN", options)
-		.replace(/\//g, ".");
-	// 备注中要添加的提醒事项完成时间
-	// const _completionDate = (reminder.completionDate == null && reminder.isCompleted == false) ? ' ' : `完成：${reminder.completionDate.toLocaleTimeString('zh-CN', options).replace(/\//g, '.')}`
-	// 要同步到日历备注的提醒事项信息
-	// const targetNote = `同步自提醒事项👇\n列表：${reminder.calendar.title}\n标题：${reminder.title}\n创建：${_creationDate}\n${_completionDate}`
-	const targetNote = `同步自提醒事项👇\n列表：${reminder.calendar.title}\n标题：${reminder.title}\n创建：${_creationDate}`;
-	// 过滤重复的reminder
-	const [targetEvent] = events.filter(
-		(e) => e.notes != null && e.notes.indexOf(targetNote) != -1
-	);
+  reminder.notes =
+    !reminder.notes || reminder.notes == null || reminder.notes == 'undefined'
+      ? '无'
+      : reminder.notes;
+  //const targetNote = `[Reminder] ${reminder.identifier}`
+  const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+  // 备注中要添加的提醒事项创建时间
+  const _creationDate = reminder.creationDate
+    .toLocaleTimeString('zh-CN', options)
+    .replace(/\//g, '.');
+  // 备注中要添加的提醒事项完成时间
+  // const _completionDate = (reminder.completionDate == null && reminder.isCompleted == false) ? ' ' : `完成：${reminder.completionDate.toLocaleTimeString('zh-CN', options).replace(/\//g, '.')}`
+  // 要同步到日历备注的提醒事项信息
+  // const targetNote = `同步自提醒事项👇\n列表：${reminder.calendar.title}\n标题：${reminder.title}\n创建：${_creationDate}\n${_completionDate}`
+  const targetNote = `同步自提醒事项👇\n列表：${reminder.calendar.title}\n标题：${reminder.title}\n创建：${_creationDate}`;
+  // 过滤重复的reminder
+  const [targetEvent] = events.filter(
+    (e) => e.notes != null && e.notes.indexOf(targetNote) != -1
+  );
 
-	if (!m_dict[reminder.calendar.title]) {
-		console.warn("找不到日历" + reminder.calendar.title);
-		continue;
-	}
+  if (!m_dict[reminder.calendar.title]) {
+    console.warn('找不到日历' + reminder.calendar.title);
+    continue;
+  }
 
-	if (targetEvent) {
-		//console.log(`找到已经创建的事项 ${reminder.title}`)
-		updateEvent(targetEvent, reminder);
-	} else {
-		console.warn(
-			`同步提醒事项【${reminder.title}】到日历【${reminder.calendar.title}】`
-		);
-		const newEvent = new CalendarEvent();
-		// 日历备注
-		newEvent.notes = reminder.notes + "\n\n" + targetNote; //要加入备注
-		updateEvent(newEvent, reminder);
-	}
+  if (targetEvent) {
+    //console.log(`找到已经创建的事项 ${reminder.title}`)
+    updateEvent(targetEvent, reminder);
+  } else {
+    console.warn(
+      `同步提醒事项【${reminder.title}】到日历【${reminder.calendar.title}】`
+    );
+    const newEvent = new CalendarEvent();
+    // 日历备注
+    newEvent.notes = reminder.notes + '\n\n' + targetNote; //要加入备注
+    updateEvent(newEvent, reminder);
+  }
 }
 
 Script.complete();
 
 //设置period
 function setPeriod(event, period, description) {
-	const supplement =
-		description == "延期" || description == "提前" ? "完成" : "";
-	if (period < 3600) {
-		return (subHeading =
-			Math.floor((period / 60).toFixed(1)) == 0
-				? `准时完成`
-				: `${description}${(period / 60).toFixed()}分钟${supplement}`);
-	} else if (period >= 3600 && period <= 3600 * 24) {
-		return (subHeading =
-			((period % 3600) / 60).toFixed() == 0
-				? `${description}${(period / 3600).toFixed()}小时${supplement}`
-				: `${description}${Math.floor((period / 3600).toFixed(2))}小时${(
-						(period % 3600) /
-						60
-				  ).toFixed()}分钟${supplement}`);
-	} else {
-		return (subHeading =
-			((period % (3600 * 24)) / 3600).toFixed() == 0
-				? `${description}${(period / 3600 / 24).toFixed()}天${supplement}`
-				: `${description}${(period / 3600 / 24).toFixed()}天${(
-						(period % (3600 * 24)) /
-						3600
-				  ).toFixed()}小时${supplement}`);
-	}
+  const supplement =
+    description == '延期' || description == '提前' ? '完成' : '';
+  if (period < 3600) {
+    return (subHeading =
+      Math.floor((period / 60).toFixed(1)) == 0
+        ? `准时完成`
+        : `${description}${(period / 60).toFixed()}分钟${supplement}`);
+  } else if (period >= 3600 && period <= 3600 * 24) {
+    return (subHeading =
+      ((period % 3600) / 60).toFixed() == 0
+        ? `${description}${(period / 3600).toFixed()}小时${supplement}`
+        : `${description}${Math.floor((period / 3600).toFixed(2))}小时${(
+            (period % 3600) /
+            60
+          ).toFixed()}分钟${supplement}`);
+  } else {
+    return (subHeading =
+      ((period % (3600 * 24)) / 3600).toFixed() == 0
+        ? `${description}${(period / 3600 / 24).toFixed()}天${supplement}`
+        : `${description}${(period / 3600 / 24).toFixed()}天${(
+            (period % (3600 * 24)) /
+            3600
+          ).toFixed()}小时${supplement}`);
+  }
 }
 
 //日历中创建提醒
 function updateEvent(event, reminder) {
-	cal_name = reminder.calendar.title;
-	cal = m_dict[cal_name];
-	event.calendar = cal;
-	// console.warn(event.calendar.title)
-	// 已完成事项
-	if (reminder.isCompleted) {
-		event.isAllDay = false;
-		event.startDate = reminder.dueDate;
-		event.endDate = reminder.completionDate;
-		var period = (reminder.dueDate - reminder.completionDate) / 1000;
-		period = period.toFixed();
-		if (period < 0) {
-			period = -period;
-			let titleTail = setPeriod(event, period, "延期");
-			event.title = `✅${reminder.title} (${titleTail})`;
-		} else if (period == 0) {
-			event.title = `✅${reminder.title} (准时完成)`;
-		} else {
-			let titleTail = setPeriod(event, period, "提前");
-			event.title = `✅${reminder.title} (${titleTail})`;
-			event.endDate = reminder.dueDate;
-			event.startDate = reminder.completionDate;
-		}
-	}
-	// 未完成事项
-	else {
-		const nowtime = new Date();
-		var period = (reminder.dueDate - nowtime) / 1000;
-		period = period.toFixed();
-		if (period < 0) {
-			// 待办顺延
-			period = -period;
-			let titleTail = setPeriod(event, period, "已延期");
-			// 如果不是在同一天,设置为全天事项
-			if (reminder.dueDate.getDate() != nowtime.getDate()) {
-				event.title = `❌${reminder.title} (${titleTail})`;
-				event.startDate = nowtime;
-				event.endDate = nowtime;
-				event.isAllDay = true;
-			}
-			// 在同一天的保持原来的时间
-			else {
-				event.title = `⭕️${reminder.title} (${titleTail})`;
-				event.isAllDay = false;
-				event.startDate = reminder.dueDate;
-				event.endDate = nowtime;
-			}
-		} else {
-			event.isAllDay = false;
-			let titleTail = setPeriod(event, period, "还剩");
-			event.title = `⭕️${reminder.title} (${titleTail})`;
-			event.startDate = reminder.dueDate;
-			event.endDate = reminder.dueDate;
-		}
-	}
-	event.save();
+  cal_name = reminder.calendar.title;
+  cal = m_dict[cal_name];
+  event.calendar = cal;
+  // console.warn(event.calendar.title)
+  // 已完成事项
+  if (reminder.isCompleted) {
+    event.isAllDay = false;
+    event.startDate = reminder.dueDate;
+    event.endDate = reminder.completionDate;
+    var period = (reminder.dueDate - reminder.completionDate) / 1000;
+    period = period.toFixed();
+    if (period < 0) {
+      period = -period;
+      let titleTail = setPeriod(event, period, '延期');
+      event.title = `✅${reminder.title} (${titleTail})`;
+    } else if (period == 0) {
+      event.title = `✅${reminder.title} (准时完成)`;
+    } else {
+      let titleTail = setPeriod(event, period, '提前');
+      event.title = `✅${reminder.title} (${titleTail})`;
+      event.endDate = reminder.dueDate;
+      event.startDate = reminder.completionDate;
+    }
+  }
+  // 未完成事项
+  else {
+    const nowtime = new Date();
+    var period = (reminder.dueDate - nowtime) / 1000;
+    period = period.toFixed();
+    if (period < 0) {
+      // 待办顺延
+      period = -period;
+      let titleTail = setPeriod(event, period, '已延期');
+      // 如果不是在同一天,设置为全天事项
+      if (reminder.dueDate.getDate() != nowtime.getDate()) {
+        event.title = `❌${reminder.title} (${titleTail})`;
+        event.startDate = nowtime;
+        event.endDate = nowtime;
+        event.isAllDay = true;
+      }
+      // 在同一天的保持原来的时间
+      else {
+        event.title = `⭕️${reminder.title} (${titleTail})`;
+        event.isAllDay = false;
+        event.startDate = reminder.dueDate;
+        event.endDate = nowtime;
+      }
+    } else {
+      event.isAllDay = false;
+      let titleTail = setPeriod(event, period, '还剩');
+      event.title = `⭕️${reminder.title} (${titleTail})`;
+      event.startDate = reminder.dueDate;
+      event.endDate = reminder.dueDate;
+    }
+  }
+  event.save();
 }
 ```
 
@@ -412,157 +413,157 @@ var calendar = await Calendar.forEvents();
 //获取日历名和对应的日历
 var m_dict = {};
 for (cal of calendar) {
-	m_dict[cal.title] = cal;
+  m_dict[cal.title] = cal;
 }
 
 const events = await CalendarEvent.between(startDate, endDate, calendar);
 console.log(`获取 ${events.length} 条日历`);
 
 for (const reminder of reminders) {
-	reminder.notes =
-		!reminder.notes || reminder.notes == null || reminder.notes == "undefined"
-			? "无"
-			: reminder.notes;
-	//reminder的标识符
-	const targetNote = `${reminder.identifier}`;
+  reminder.notes =
+    !reminder.notes || reminder.notes == null || reminder.notes == 'undefined'
+      ? '无'
+      : reminder.notes;
+  //reminder的标识符
+  const targetNote = `${reminder.identifier}`;
 
-	const [targetEvent] = events.filter(
-		(e) => e.notes != null && e.notes.indexOf(targetNote) != -1
-	); //过滤重复的reminder
-	if (!m_dict[reminder.calendar.title]) {
-		console.warn("找不到日历" + reminder.calendar.title);
-		continue;
-	}
-	if (targetEvent) {
-		updateEvent(targetEvent, reminder);
-	} else {
-		console.warn(`创建事项 ${reminder.title} 到 ${reminder.calendar.title}`);
-		const newEvent = new CalendarEvent();
-		newEvent.notes = reminder.notes + "\n\n" + targetNote; //要加入备注
+  const [targetEvent] = events.filter(
+    (e) => e.notes != null && e.notes.indexOf(targetNote) != -1
+  ); //过滤重复的reminder
+  if (!m_dict[reminder.calendar.title]) {
+    console.warn('找不到日历' + reminder.calendar.title);
+    continue;
+  }
+  if (targetEvent) {
+    updateEvent(targetEvent, reminder);
+  } else {
+    console.warn(`创建事项 ${reminder.title} 到 ${reminder.calendar.title}`);
+    const newEvent = new CalendarEvent();
+    newEvent.notes = reminder.notes + '\n\n' + targetNote; //要加入备注
 
-		updateEvent(newEvent, reminder);
-	}
+    updateEvent(newEvent, reminder);
+  }
 }
 
 Script.complete();
 
 //设置period
 function setPeriod(reminder, period, description) {
-	const supplement =
-		description == "延期" || description == "提前" ? "完成" : "";
-	if (period < 3600) {
-		return Math.floor((period / 60).toFixed(1)) == 0
-			? `准时完成`
-			: `${description}${(period / 60).toFixed()}分钟${supplement}`;
-	} else if (period >= 3600 && period <= 3600 * 24) {
-		if (
-			!reminder.dueDateIncludesTime &&
-			reminder.dueDate.getDate() == new Date().getDate()
-		) {
-			return `已完成`;
-		} else {
-			return ((period % 3600) / 60).toFixed() == 0
-				? `${description}${(period / 3600).toFixed()}小时${supplement}`
-				: `${description}${Math.floor((period / 3600).toFixed(2))}小时${(
-						(period % 3600) /
-						60
-				  ).toFixed()}分钟${supplement}`;
-		}
-	} else {
-		if (!reminder.dueDateIncludesTime) {
-			if (description == "已延期" || description == "延期") {
-				return ((period % (3600 * 24)) / 3600).toFixed() == 0
-					? `${description}${(period / 3600 / 24).toFixed() - 1}天${supplement}`
-					: `${description}${(period / 3600 / 24).toFixed() - 1}天${(
-							(period % (3600 * 24)) /
-							3600
-					  ).toFixed()}小时${supplement}`;
-			} else {
-				return ((period % (3600 * 24)) / 3600).toFixed() == 0
-					? `${description}${(period / 3600 / 24).toFixed()}天${supplement}`
-					: `${description}${(period / 3600 / 24).toFixed()}天${(
-							(period % (3600 * 24)) /
-							3600
-					  ).toFixed()}小时${supplement}`;
-			}
-		} else {
-			return ((period % (3600 * 24)) / 3600).toFixed() == 0
-				? `${description}${(period / 3600 / 24).toFixed()}天${supplement}`
-				: `${description}${(period / 3600 / 24).toFixed()}天${(
-						(period % (3600 * 24)) /
-						3600
-				  ).toFixed()}小时${supplement}`;
-		}
-	}
+  const supplement =
+    description == '延期' || description == '提前' ? '完成' : '';
+  if (period < 3600) {
+    return Math.floor((period / 60).toFixed(1)) == 0
+      ? `准时完成`
+      : `${description}${(period / 60).toFixed()}分钟${supplement}`;
+  } else if (period >= 3600 && period <= 3600 * 24) {
+    if (
+      !reminder.dueDateIncludesTime &&
+      reminder.dueDate.getDate() == new Date().getDate()
+    ) {
+      return `已完成`;
+    } else {
+      return ((period % 3600) / 60).toFixed() == 0
+        ? `${description}${(period / 3600).toFixed()}小时${supplement}`
+        : `${description}${Math.floor((period / 3600).toFixed(2))}小时${(
+            (period % 3600) /
+            60
+          ).toFixed()}分钟${supplement}`;
+    }
+  } else {
+    if (!reminder.dueDateIncludesTime) {
+      if (description == '已延期' || description == '延期') {
+        return ((period % (3600 * 24)) / 3600).toFixed() == 0
+          ? `${description}${(period / 3600 / 24).toFixed() - 1}天${supplement}`
+          : `${description}${(period / 3600 / 24).toFixed() - 1}天${(
+              (period % (3600 * 24)) /
+              3600
+            ).toFixed()}小时${supplement}`;
+      } else {
+        return ((period % (3600 * 24)) / 3600).toFixed() == 0
+          ? `${description}${(period / 3600 / 24).toFixed()}天${supplement}`
+          : `${description}${(period / 3600 / 24).toFixed()}天${(
+              (period % (3600 * 24)) /
+              3600
+            ).toFixed()}小时${supplement}`;
+      }
+    } else {
+      return ((period % (3600 * 24)) / 3600).toFixed() == 0
+        ? `${description}${(period / 3600 / 24).toFixed()}天${supplement}`
+        : `${description}${(period / 3600 / 24).toFixed()}天${(
+            (period % (3600 * 24)) /
+            3600
+          ).toFixed()}小时${supplement}`;
+    }
+  }
 }
 
 //日历中创建提醒
 function updateEvent(event, reminder) {
-	cal_name = reminder.calendar.title;
-	cal = m_dict[cal_name];
-	event.calendar = cal;
+  cal_name = reminder.calendar.title;
+  cal = m_dict[cal_name];
+  event.calendar = cal;
 
-	// 已完成事项
-	if (reminder.isCompleted) {
-		event.isAllDay = false;
-		event.startDate = reminder.dueDate;
-		event.endDate = reminder.completionDate;
-		var period = (reminder.dueDate - reminder.completionDate) / 1000;
-		period = period.toFixed();
-		if (period < 0) {
-			period = -period;
-			let titleTail = setPeriod(reminder, period, "延期");
-			event.title = `✅${reminder.title} (${titleTail})`;
-		} else if (period == 0) {
-			event.title = `✅${reminder.title} (准时完成)`;
-		} else {
-			let titleTail = setPeriod(reminder, period, "提前");
-			event.title = `✅${reminder.title} (${titleTail})`;
-			event.endDate = reminder.dueDate;
-			event.startDate = reminder.completionDate;
-		}
-	}
-	// 未完成事项
-	else {
-		const nowtime = new Date();
-		var period = (reminder.dueDate - nowtime) / 1000;
-		period = period.toFixed();
-		if (period < 0) {
-			// 待办顺延
-			period = -period;
-			let titleTail = setPeriod(reminder, period, "已延期");
-			// 如果不是在同一天,设置为全天事项
-			if (reminder.dueDate.getDate() != nowtime.getDate()) {
-				event.title = `❌${reminder.title} (${titleTail})`;
-				event.startDate = nowtime;
-				event.endDate = nowtime;
-				event.isAllDay = true;
-			}
-			// 在同一天的保持原来的时间
-			else {
-				if (!reminder.dueDateIncludesTime) {
-					event.isAllDay = true;
-					event.title = `⭕️${reminder.title}(待完成)`;
-				} else {
-					event.title = `⭕️${reminder.title} (${titleTail})`;
-					event.isAllDay = false;
-					event.startDate = reminder.dueDate;
-					event.endDate = nowtime;
-				}
-			}
-		} else {
-			event.isAllDay = false;
-			let titleTail = setPeriod(reminder, period, "还剩");
-			event.title = reminder.dueDateIncludesTime
-				? `⭕️${reminder.title} (${titleTail})`
-				: `⭕️${reminder.title}(待完成)`;
-			event.startDate = reminder.dueDate;
-			event.endDate = reminder.dueDateIncludesTime
-				? reminder.dueDate
-				: new Date(reminder.dueDate.getTime() + 24 * 60 * 60 * 1000);
-		}
-	}
-	event.save();
+  // 已完成事项
+  if (reminder.isCompleted) {
+    event.isAllDay = false;
+    event.startDate = reminder.dueDate;
+    event.endDate = reminder.completionDate;
+    var period = (reminder.dueDate - reminder.completionDate) / 1000;
+    period = period.toFixed();
+    if (period < 0) {
+      period = -period;
+      let titleTail = setPeriod(reminder, period, '延期');
+      event.title = `✅${reminder.title} (${titleTail})`;
+    } else if (period == 0) {
+      event.title = `✅${reminder.title} (准时完成)`;
+    } else {
+      let titleTail = setPeriod(reminder, period, '提前');
+      event.title = `✅${reminder.title} (${titleTail})`;
+      event.endDate = reminder.dueDate;
+      event.startDate = reminder.completionDate;
+    }
+  }
+  // 未完成事项
+  else {
+    const nowtime = new Date();
+    var period = (reminder.dueDate - nowtime) / 1000;
+    period = period.toFixed();
+    if (period < 0) {
+      // 待办顺延
+      period = -period;
+      let titleTail = setPeriod(reminder, period, '已延期');
+      // 如果不是在同一天,设置为全天事项
+      if (reminder.dueDate.getDate() != nowtime.getDate()) {
+        event.title = `❌${reminder.title} (${titleTail})`;
+        event.startDate = nowtime;
+        event.endDate = nowtime;
+        event.isAllDay = true;
+      }
+      // 在同一天的保持原来的时间
+      else {
+        if (!reminder.dueDateIncludesTime) {
+          event.isAllDay = true;
+          event.title = `⭕️${reminder.title}(待完成)`;
+        } else {
+          event.title = `⭕️${reminder.title} (${titleTail})`;
+          event.isAllDay = false;
+          event.startDate = reminder.dueDate;
+          event.endDate = nowtime;
+        }
+      }
+    } else {
+      event.isAllDay = false;
+      let titleTail = setPeriod(reminder, period, '还剩');
+      event.title = reminder.dueDateIncludesTime
+        ? `⭕️${reminder.title} (${titleTail})`
+        : `⭕️${reminder.title}(待完成)`;
+      event.startDate = reminder.dueDate;
+      event.endDate = reminder.dueDateIncludesTime
+        ? reminder.dueDate
+        : new Date(reminder.dueDate.getTime() + 24 * 60 * 60 * 1000);
+    }
+  }
+  event.save();
 }
 ```
 
@@ -638,9 +639,9 @@ widget.setPadding(12, 12, 12, 0);
 const gradient = new LinearGradient();
 gradient.locations = [0, 0.5, 1];
 gradient.colors = [
-	new Color("#2c5364"),
-	new Color("#203a43"),
-	new Color("#0f2027"),
+  new Color('#2c5364'),
+  new Color('#203a43'),
+  new Color('#0f2027')
 ];
 widget.backgroundGradient = gradient;
 
@@ -649,29 +650,29 @@ Script.setWidget(widget);
 
 //获取news json
 async function getNewsContent() {
-	const url =
-		"https://zhibo.sina.com.cn/api/zhibo/feed?page=1&page_size=100&zhibo_id=152&tag_id=0&dire=f&dpc=1&type=0";
-	const request = new Request(url, (timeoutInterval = 120));
-	const res = await request.loadJSON();
-	const listArr = res.result.data.feed.list;
-	//用关键词过滤掉与财经无关的新闻
-	const filterArr = [
-		"比特币",
-		"莱特币",
-		"狗狗币",
-		"疫苗",
-		"新冠",
-		"疫情",
-		"蓬佩奥",
-	];
+  const url =
+    'https://zhibo.sina.com.cn/api/zhibo/feed?page=1&page_size=100&zhibo_id=152&tag_id=0&dire=f&dpc=1&type=0';
+  const request = new Request(url, (timeoutInterval = 120));
+  const res = await request.loadJSON();
+  const listArr = res.result.data.feed.list;
+  //用关键词过滤掉与财经无关的新闻
+  const filterArr = [
+    '比特币',
+    '莱特币',
+    '狗狗币',
+    '疫苗',
+    '新冠',
+    '疫情',
+    '蓬佩奥'
+  ];
 
-	let filterResult = listArr.filter((item) => {
-		return filterArr.every((ele) => {
-			return !item.rich_text.includes(ele);
-		});
-	});
+  let filterResult = listArr.filter((item) => {
+    return filterArr.every((ele) => {
+      return !item.rich_text.includes(ele);
+    });
+  });
 
-	return filterResult;
+  return filterResult;
 }
 ```
 
@@ -693,28 +694,28 @@ const widget = new ListWidget();
 const news = await getNewsContent();
 //console.log(news[0]);
 
-let textContent = "";
+let textContent = '';
 for (let i = 0; i < 6; i++) {
-	//timeString格式 HH:mm
-	let timeString = news[i].create_time.match(/\d{2}:\d{2}/)[0];
-	textContent += `${i + 1}. ${news[i].rich_text.replace(
-		/\s+/g,
-		""
-	)} (${timeString})\n\n`;
+  //timeString格式 HH:mm
+  let timeString = news[i].create_time.match(/\d{2}:\d{2}/)[0];
+  textContent += `${i + 1}. ${news[i].rich_text.replace(
+    /\s+/g,
+    ''
+  )} (${timeString})\n\n`;
 }
 
 //标题图标
 let headerStack = widget.addStack();
-let iconSymbol = SFSymbol.named("newspaper.fill");
+let iconSymbol = SFSymbol.named('newspaper.fill');
 let headerIcon = headerStack.addImage(iconSymbol.image);
 headerIcon.imageSize = new Size(16, 16);
-headerIcon.tintColor = Color.dynamic(Color.green(), new Color("#1badf8"));
+headerIcon.tintColor = Color.dynamic(Color.green(), new Color('#1badf8'));
 
 //标题文字
 let time = new Date();
-let timeText = time.toLocaleString("zh-CN", { month: "long", day: "numeric" });
+let timeText = time.toLocaleString('zh-CN', { month: 'long', day: 'numeric' });
 let headerText = headerStack.addText(` 全球财经新闻  ${timeText}`);
-headerText.textColor = Color.dynamic(Color.green(), new Color("#1badf8"));
+headerText.textColor = Color.dynamic(Color.green(), new Color('#1badf8'));
 headerText.font = Font.mediumRoundedSystemFont(14);
 
 headerStack.useDefaultPadding();
@@ -725,7 +726,7 @@ widget.addSpacer(12);
 const text = widget.addText(textContent);
 
 //字体样式
-text.textColor = Color.dynamic(new Color("#000000"), new Color("#fbfcfb"));
+text.textColor = Color.dynamic(new Color('#000000'), new Color('#fbfcfb'));
 text.font = Font.mediumRoundedSystemFont(12.5);
 text.textOpacity = 0.7;
 text.leftAlignText();
@@ -739,8 +740,8 @@ widget.useDefaultPadding();
 
 //动态背景色
 widget.backgroundColor = Color.dynamic(
-	new Color("#ffffff"),
-	new Color("#1b1c1e")
+  new Color('#ffffff'),
+  new Color('#1b1c1e')
 );
 
 //>>>渐变色背景
@@ -757,37 +758,37 @@ widget.backgroundColor = Color.dynamic(
 //跳转到 Safari 浏览器打开网页
 //Safari.open('https://news.dodolo.top');
 //在 app 内全屏打开网页
-Safari.openInApp("https://news.dodolo.top", true);
+Safari.openInApp('https://news.dodolo.top', true);
 //设置组件
 Script.setWidget(widget);
 
 //获取news json
 async function getNewsContent() {
-	const url =
-		"https://zhibo.sina.com.cn/api/zhibo/feed?page=1&page_size=30&zhibo_id=152&tag_id=0&dire=f&dpc=1&type=0";
-	const request = new Request(url, (timeoutInterval = 120));
-	const res = await request.loadJSON();
-	const listArr = res.result.data.feed.list;
-	const filterArr = [
-		"比特币",
-		"莱特币",
-		"瑞波币",
-		"以太币",
-		"以太坊",
-		"狗狗币",
-		"疫苗",
-		"新冠",
-		"疫情",
-		"蓬佩奥",
-	];
+  const url =
+    'https://zhibo.sina.com.cn/api/zhibo/feed?page=1&page_size=30&zhibo_id=152&tag_id=0&dire=f&dpc=1&type=0';
+  const request = new Request(url, (timeoutInterval = 120));
+  const res = await request.loadJSON();
+  const listArr = res.result.data.feed.list;
+  const filterArr = [
+    '比特币',
+    '莱特币',
+    '瑞波币',
+    '以太币',
+    '以太坊',
+    '狗狗币',
+    '疫苗',
+    '新冠',
+    '疫情',
+    '蓬佩奥'
+  ];
 
-	let filterResult = listArr.filter((item) => {
-		return filterArr.every((ele) => {
-			return !item.rich_text.includes(ele);
-		});
-	});
+  let filterResult = listArr.filter((item) => {
+    return filterArr.every((ele) => {
+      return !item.rich_text.includes(ele);
+    });
+  });
 
-	return filterResult;
+  return filterResult;
 }
 ```
 
@@ -828,13 +829,13 @@ async function getNewsContent() {
 - **脚本使用前，需修改如下信息**
 
 ```js
-const User = "你要显示的名字";
-const City = "所在城市";
-const Coordinates = "城市经纬度，浏览器可查";
+const User = '你要显示的名字';
+const City = '所在城市';
+const Coordinates = '城市经纬度，浏览器可查';
 
 // 下面两个key需要在相应的网站去申请，注意免费账号有单日数据请求次数限制
-const WeatherKey = "在后面的注释网站里申请key"; // you can get it from https://dev.heweather.com///
-const AQIKey = "在后面的注释网站里申请key"; // https://dev.heweather.com/
+const WeatherKey = '在后面的注释网站里申请key'; // you can get it from https://dev.heweather.com///
+const AQIKey = '在后面的注释网站里申请key'; // https://dev.heweather.com/
 ```
 
 :::details 点击查看脚本
@@ -844,12 +845,12 @@ const AQIKey = "在后面的注释网站里申请key"; // https://dev.heweather.
 // These must be at the very top of the file. Do not edit.
 // icon-color: orange icon-glyph: quote-right
 
-const User = "Tien";
-const City = "beijing";
+const User = 'Tien';
+const City = 'beijing';
 // 城市经纬度
-const Coordinates = "116.41,39.92";
-const WeatherKey = "在后面的注释网站里申请key"; // you can get it from https://dev.heweather.com///
-const AQIKey = "在后面的注释网站里申请key"; // https://dev.heweather.com/
+const Coordinates = '116.41,39.92';
+const WeatherKey = '在后面的注释网站里申请key'; // you can get it from https://dev.heweather.com///
+const AQIKey = '在后面的注释网站里申请key'; // https://dev.heweather.com/
 
 // const AQIToken = 'key' // you can get it from https://aqicn.org/data-platform/token/#/
 
@@ -862,67 +863,67 @@ Script.setWidget(widget);
 Script.complete();
 
 function createWidget() {
-	const w = new ListWidget();
-	const bgColor = new LinearGradient();
+  const w = new ListWidget();
+  const bgColor = new LinearGradient();
 
-	bgColor.colors = [
-		new Color("#2c5364"),
-		new Color("#203a43"),
-		new Color("#0f2027"),
-	];
-	bgColor.locations = [0.0, 0.5, 1.0];
-	w.backgroundGradient = bgColor;
+  bgColor.colors = [
+    new Color('#2c5364'),
+    new Color('#203a43'),
+    new Color('#0f2027')
+  ];
+  bgColor.locations = [0.0, 0.5, 1.0];
+  w.backgroundGradient = bgColor;
 
-	w.setPadding(12, 12, 12, 0);
-	w.spacing = 8;
+  w.setPadding(12, 12, 12, 0);
+  w.spacing = 8;
 
-	const time = new Date();
+  const time = new Date();
 
-	const hour = time.getHours();
-	const isMidnight = hour < 8 && "midnight";
-	const isMorning = hour >= 8 && hour < 12 && "morning";
-	const isAfternoon = hour >= 12 && hour < 19 && "afternoon";
-	const isEvening = hour >= 19 && hour < 21 && "evening";
-	const isNight = hour >= 21 && "night";
+  const hour = time.getHours();
+  const isMidnight = hour < 8 && 'midnight';
+  const isMorning = hour >= 8 && hour < 12 && 'morning';
+  const isAfternoon = hour >= 12 && hour < 19 && 'afternoon';
+  const isEvening = hour >= 19 && hour < 21 && 'evening';
+  const isNight = hour >= 21 && 'night';
 
-	const dfTime = new DateFormatter();
-	dfTime.locale = "en";
-	dfTime.useMediumDateStyle();
-	dfTime.useNoTimeStyle();
+  const dfTime = new DateFormatter();
+  dfTime.locale = 'en';
+  dfTime.useMediumDateStyle();
+  dfTime.useNoTimeStyle();
 
-	const Line1 = w.addText(
-		`[🤖] Hi, ${User}. Good ${isMidnight ||
-			isMorning ||
-			isAfternoon ||
-			isEvening ||
-			isNight}!`
-	);
-	Line1.textColor = new Color("#fb6b55");
-	//     Line1.font = new Font('Menlo', 11)
-	Line1.font = Font.boldRoundedSystemFont(12);
-	const enTime = dfTime.string(time);
-	const Line2 = w.addText(`[📆] ${enTime} ${lunarData}`);
-	Line2.textColor = new Color("#C6FFDD");
-	//     Line2.font = new Font('Menlo', 11)
-	Line2.font = Font.boldRoundedSystemFont(12);
-	const Line3 = w.addText(`[☁️] ${weatherData} AQI:${aqi}`);
-	Line3.textColor = new Color("#3896d0");
-	//     Line3.font = new Font('Menlo', 11)
-	Line3.font = Font.boldRoundedSystemFont(12);
+  const Line1 = w.addText(
+    `[🤖] Hi, ${User}. Good ${isMidnight ||
+      isMorning ||
+      isAfternoon ||
+      isEvening ||
+      isNight}!`
+  );
+  Line1.textColor = new Color('#fb6b55');
+  //     Line1.font = new Font('Menlo', 11)
+  Line1.font = Font.boldRoundedSystemFont(12);
+  const enTime = dfTime.string(time);
+  const Line2 = w.addText(`[📆] ${enTime} ${lunarData}`);
+  Line2.textColor = new Color('#C6FFDD');
+  //     Line2.font = new Font('Menlo', 11)
+  Line2.font = Font.boldRoundedSystemFont(12);
+  const Line3 = w.addText(`[☁️] ${weatherData} AQI:${aqi}`);
+  Line3.textColor = new Color('#3896d0');
+  //     Line3.font = new Font('Menlo', 11)
+  Line3.font = Font.boldRoundedSystemFont(12);
 
-	const Line4 = w.addText(
-		`[${Device.isCharging() ? "⚡️" : "🔋"}] ${renderBattery()} ${
-			Device.isCharging() ? "Charging" : "Battery"
-		}`
-	);
-	Line4.textColor = new Color("#2aa876");
-	//     Line4.font = new Font('Menlo', 11)
-	Line4.font = Font.boldRoundedSystemFont(12);
-	const Line5 = w.addText(`[⏳] ${renderYearProgress()} YearProgress`);
-	Line5.textColor = new Color("#fba566");
-	//     Line5.font = new Font('Menlo', 11)
-	Line5.font = Font.boldRoundedSystemFont(12);
-	return w;
+  const Line4 = w.addText(
+    `[${Device.isCharging() ? '⚡️' : '🔋'}] ${renderBattery()} ${
+      Device.isCharging() ? 'Charging' : 'Battery'
+    }`
+  );
+  Line4.textColor = new Color('#2aa876');
+  //     Line4.font = new Font('Menlo', 11)
+  Line4.font = Font.boldRoundedSystemFont(12);
+  const Line5 = w.addText(`[⏳] ${renderYearProgress()} YearProgress`);
+  Line5.textColor = new Color('#fba566');
+  //     Line5.font = new Font('Menlo', 11)
+  Line5.font = Font.boldRoundedSystemFont(12);
+  return w;
 }
 // 访问速度慢，需要VPN
 //  async function getAQI() {
@@ -933,66 +934,66 @@ function createWidget() {
 // }
 
 async function getAQI() {
-	const url = `https://devapi.qweather.com/v7/air/now?location=${Coordinates}&key=${AQIKey}`; //
-	const request = new Request(url, (timeoutInterval = 1800));
-	const res = await request.loadJSON();
-	// console.log(res.now)
-	return res.now.aqi;
+  const url = `https://devapi.qweather.com/v7/air/now?location=${Coordinates}&key=${AQIKey}`; //
+  const request = new Request(url, (timeoutInterval = 1800));
+  const res = await request.loadJSON();
+  // console.log(res.now)
+  return res.now.aqi;
 }
 
 async function getLunarData() {
-	const url = "https://api.xlongwei.com/service/datetime/convert.json";
-	const request = new Request(url, (timeoutInterval = 3600));
-	const res = await request.loadJSON();
-	return `${res.ganzhi}年（${res.shengxiao}）${res.chinese.replace(
-		/.*年/,
-		""
-	)}`;
+  const url = 'https://api.xlongwei.com/service/datetime/convert.json';
+  const request = new Request(url, (timeoutInterval = 3600));
+  const res = await request.loadJSON();
+  return `${res.ganzhi}年（${res.shengxiao}）${res.chinese.replace(
+    /.*年/,
+    ''
+  )}`;
 }
 
 async function getWeather() {
-	const requestCityInfo = new Request(
-		`https://geoapi.heweather.net/v2/city/lookup?key=${WeatherKey}&location=${City}&lang=en`,
-		(timeoutInterval = 1800)
-	);
-	const resCityInfo = await requestCityInfo.loadJSON();
-	const { name, id } = resCityInfo.location[0];
-	// console.log(name)
+  const requestCityInfo = new Request(
+    `https://geoapi.heweather.net/v2/city/lookup?key=${WeatherKey}&location=${City}&lang=en`,
+    (timeoutInterval = 1800)
+  );
+  const resCityInfo = await requestCityInfo.loadJSON();
+  const { name, id } = resCityInfo.location[0];
+  // console.log(name)
 
-	const requestNow = new Request(
-		`https://devapi.heweather.net/v7/weather/now?location=${id}&key=${WeatherKey}&lang=en`,
-		(timeoutInterval = 3600)
-	);
-	const requestDaily = new Request(
-		`https://devapi.heweather.net/v7/weather/3d?location=${id}&key=${WeatherKey}&lang=en`,
-		(timeoutInterval = 3600)
-	);
-	const resNow = await requestNow.loadJSON();
-	const resDaily = await requestDaily.loadJSON();
-	//console.log(resDaily.daily[0])
+  const requestNow = new Request(
+    `https://devapi.heweather.net/v7/weather/now?location=${id}&key=${WeatherKey}&lang=en`,
+    (timeoutInterval = 3600)
+  );
+  const requestDaily = new Request(
+    `https://devapi.heweather.net/v7/weather/3d?location=${id}&key=${WeatherKey}&lang=en`,
+    (timeoutInterval = 3600)
+  );
+  const resNow = await requestNow.loadJSON();
+  const resDaily = await requestDaily.loadJSON();
+  //console.log(resDaily.daily[0])
 
-	//return `${name} ${resNow.now.text} T:${resNow.now.temp}° H:${resDaily.daily[0].tempMax}° L:${resDaily.daily[0].tempMin}°`
-	return `${name} | ${resNow.now.text} Temp:${resNow.now.temp}° UV:${resDaily.daily[0].uvIndex}`;
+  //return `${name} ${resNow.now.text} T:${resNow.now.temp}° H:${resDaily.daily[0].tempMax}° L:${resDaily.daily[0].tempMin}°`
+  return `${name} | ${resNow.now.text} Temp:${resNow.now.temp}° UV:${resDaily.daily[0].uvIndex}`;
 }
 
 // 如果进度条过长导致换行，可以修改下面的数字15，或者修改字体，把 Font.boldRoundedSystemFont(12) 改成 new Font('Menlo', 11)
 function renderProgress(progress) {
-	const used = "▓".repeat(Math.floor(progress * 15));
-	const left = "░".repeat(15 - used.length);
-	return `${used}${left} ${Math.floor(progress * 100)}%`;
+  const used = '▓'.repeat(Math.floor(progress * 15));
+  const left = '░'.repeat(15 - used.length);
+  return `${used}${left} ${Math.floor(progress * 100)}%`;
 }
 
 function renderBattery() {
-	const batteryLevel = Device.batteryLevel();
-	return renderProgress(batteryLevel);
+  const batteryLevel = Device.batteryLevel();
+  return renderProgress(batteryLevel);
 }
 
 function renderYearProgress() {
-	const now = new Date();
-	const start = new Date(now.getFullYear(), 0, 1); // Start of this year
-	const end = new Date(now.getFullYear() + 1, 0, 1); // End of this year
-	const progress = (now - start) / (end - start);
-	return renderProgress(progress);
+  const now = new Date();
+  const start = new Date(now.getFullYear(), 0, 1); // Start of this year
+  const end = new Date(now.getFullYear() + 1, 0, 1); // End of this year
+  const progress = (now - start) / (end - start);
+  return renderProgress(progress);
 }
 ```
 
@@ -1041,127 +1042,127 @@ Script.setWidget(widget);
 
 //创建组件
 async function createWidget() {
-	const widget = new ListWidget();
-	const imgData = await getImgUrl();
+  const widget = new ListWidget();
+  const imgData = await getImgUrl();
 
-	//小飞机图标
-	const iconStack = widget.addStack();
-	const iconSymbol = SFSymbol.named("paperplane.fill");
-	const headerIcon = iconStack.addImage(iconSymbol.image);
-	headerIcon.imageSize = new Size(18, 18);
-	headerIcon.tintColor = Color.white();
-	//Safari跳转到原尺寸图片链接地址,以便浏览细节或者执行保存等操作
-	headerIcon.url = `${imgData[1].raw}`;
-	iconStack.useDefaultPadding();
+  //小飞机图标
+  const iconStack = widget.addStack();
+  const iconSymbol = SFSymbol.named('paperplane.fill');
+  const headerIcon = iconStack.addImage(iconSymbol.image);
+  headerIcon.imageSize = new Size(18, 18);
+  headerIcon.tintColor = Color.white();
+  //Safari跳转到原尺寸图片链接地址,以便浏览细节或者执行保存等操作
+  headerIcon.url = `${imgData[1].raw}`;
+  iconStack.useDefaultPadding();
 
-	const bgImg = await getRandomPic(imgData);
-	widget.backgroundImage = bgImg;
+  const bgImg = await getRandomPic(imgData);
+  widget.backgroundImage = bgImg;
 
-	widget.addSpacer();
-	const author = imgData[0].name;
-	//console.log(author);
-	const titleText = widget.addText(author);
-	titleText.font = Font.boldRoundedSystemFont(20);
-	titleText.textColor = Color.white();
-	titleText.leftAlignText();
+  widget.addSpacer();
+  const author = imgData[0].name;
+  //console.log(author);
+  const titleText = widget.addText(author);
+  titleText.font = Font.boldRoundedSystemFont(20);
+  titleText.textColor = Color.white();
+  titleText.leftAlignText();
 
-	const time = new Date(imgData[0].updated_at).toLocaleString("en", {
-		month: "short",
-		day: "numeric",
-		weekday: "long",
-	});
-	//console.log(time);
-	const timeText = widget.addText(time);
-	timeText.font = Font.boldRoundedSystemFont(14);
-	timeText.textColor = Color.white();
-	timeText.leftAlignText();
+  const time = new Date(imgData[0].updated_at).toLocaleString('en', {
+    month: 'short',
+    day: 'numeric',
+    weekday: 'long'
+  });
+  //console.log(time);
+  const timeText = widget.addText(time);
+  timeText.font = Font.boldRoundedSystemFont(14);
+  timeText.textColor = Color.white();
+  timeText.leftAlignText();
 
-	//刷新widget（间隔5分钟）,官方服务有请求次数限制（50次/h）,根据个人喜好修改最后一位数字（改成几就是间隔几分钟刷新）
-	const interval = 1000 * 60 * 5;
-	widget.refreshAfterDate = new Date(Date.now() + interval);
+  //刷新widget（间隔5分钟）,官方服务有请求次数限制（50次/h）,根据个人喜好修改最后一位数字（改成几就是间隔几分钟刷新）
+  const interval = 1000 * 60 * 5;
+  widget.refreshAfterDate = new Date(Date.now() + interval);
 
-	return widget;
+  return widget;
 }
 
 async function getImgUrl() {
-	//返回值,存储author,imgUrl
-	const res = [];
-	//认证 access_token
-	const accessToken = "t7ectJhLmE40FN-mjn7cgDKgM7J7ZMqnUeYfGwGOA0A"; //👈 这个token换成你自己的（去 https://source.unsplash.com/ 注册）,因为官方服务有请求次数限制（50次/h）,这里我的token仅供查看效果
-	//图片标签 label
-	const label = await randomLabel();
-	const selectedItem = await randomNumber();
-	const pageNumber = selectedItem;
-	const endpoint = "https://api.unsplash.com/search/photos/";
+  //返回值,存储author,imgUrl
+  const res = [];
+  //认证 access_token
+  const accessToken = 't7ectJhLmE40FN-mjn7cgDKgM7J7ZMqnUeYfGwGOA0A'; //👈 这个token换成你自己的（去 https://source.unsplash.com/ 注册）,因为官方服务有请求次数限制（50次/h）,这里我的token仅供查看效果
+  //图片标签 label
+  const label = await randomLabel();
+  const selectedItem = await randomNumber();
+  const pageNumber = selectedItem;
+  const endpoint = 'https://api.unsplash.com/search/photos/';
 
-	let queryString = "";
-	const params = {
-		client_id: accessToken,
-		query: label,
-		page: pageNumber,
-		per_page: perPageItems,
-		//竖屏portrait, 横屏landscape, 方形squarish, 不指定时显示全部
-		//orientation: 'portrait',
-		order_by: "relevant",
-	};
+  let queryString = '';
+  const params = {
+    client_id: accessToken,
+    query: label,
+    page: pageNumber,
+    per_page: perPageItems,
+    //竖屏portrait, 横屏landscape, 方形squarish, 不指定时显示全部
+    //orientation: 'portrait',
+    order_by: 'relevant'
+  };
 
-	for (const [key, value] of Object.entries(params)) {
-		queryString += `${key}=${value}&`;
-	}
+  for (const [key, value] of Object.entries(params)) {
+    queryString += `${key}=${value}&`;
+  }
 
-	const imgObjectUrl = `${endpoint}?${queryString.slice(0, -1)}`;
+  const imgObjectUrl = `${endpoint}?${queryString.slice(0, -1)}`;
 
-	try {
-		const imgObjectRequest = new Request(imgObjectUrl);
-		const imgObjectData = await imgObjectRequest.loadJSON();
-		//user对象
-		const author = await imgObjectData.results[selectedItem].user;
-		res.push(author);
-		//图片URL
-		const imgUrl = await imgObjectData.results[selectedItem].urls;
-		res.push(imgUrl);
+  try {
+    const imgObjectRequest = new Request(imgObjectUrl);
+    const imgObjectData = await imgObjectRequest.loadJSON();
+    //user对象
+    const author = await imgObjectData.results[selectedItem].user;
+    res.push(author);
+    //图片URL
+    const imgUrl = await imgObjectData.results[selectedItem].urls;
+    res.push(imgUrl);
 
-		return res;
-	} catch (err) {
-		console.log(err);
-		return null;
-	}
+    return res;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
 }
 
 //根据 label 从 Unsplash (https://images.unsplash.com) 随机获取一张图片
 async function getRandomPic(imgData) {
-	try {
-		const imgUrl = imgData[1].regular;
-		//console.log(imgUrl);
-		const imgRequest = new Request(imgUrl);
-		const img = await imgRequest.loadImage();
-		return img;
-	} catch (err) {
-		console.log(err);
-		return null;
-	}
+  try {
+    const imgUrl = imgData[1].regular;
+    //console.log(imgUrl);
+    const imgRequest = new Request(imgUrl);
+    const img = await imgRequest.loadImage();
+    return img;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
 }
 
 //随机选取页面中的一项
 async function randomNumber() {
-	const selectedItem = Math.floor(Math.random() * perPageItems);
-	return selectedItem;
+  const selectedItem = Math.floor(Math.random() * perPageItems);
+  return selectedItem;
 }
 //随机获取图片tag（将想要显示的图片tag加入数组label）
 async function randomLabel() {
-	const label = [
-		"wallpaper",
-		"blonde",
-		"forest",
-		"river",
-		"tree",
-		"mountains",
-		"winter",
-		"fire",
-		"sunflower",
-	];
-	const len = label.length;
-	return label[Math.floor(Math.random() * len)];
+  const label = [
+    'wallpaper',
+    'blonde',
+    'forest',
+    'river',
+    'tree',
+    'mountains',
+    'winter',
+    'fire',
+    'sunflower'
+  ];
+  const len = label.length;
+  return label[Math.floor(Math.random() * len)];
 }
 ```
 
