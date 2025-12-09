@@ -9,6 +9,10 @@ tags:
   - Git
 ---
 
+:::tip
+git 命令在线练习 [learngitbranching](https://learngitbranching.js.org/?locale=zh_CN)
+:::
+
 ```shell
 常见的 Git 命令：
 

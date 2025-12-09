@@ -10,9 +10,14 @@ tags:
   - Summary
 ---
 
+:::tip
+使用 [Scriptable](https://scriptable.app/) DIY 好玩的 iOS 组件
+:::
+
 ### 1. iOS 提醒事项同步到日历
 
-**参考下面视频 [ :link: 终极解决方案！一键同步 ios【提醒事项】到【日历】 ](https://www.bilibili.com/video/BV1pK4y1Y7DX?share_source=copy_web) up 主的脚本修改，up 主 repo 地址：[ :link: zackertypical / ios_script](https://github.com/zackertypical/ios_script)**
+**参考下面视频 [ :link: 终极解决方案！一键同步 ios【提醒事项】到【日历】 ](https://www.bilibili.com/video/BV1pK4y1Y7DX?share_source=copy_web) up 主的脚本修改**  
+**up 主 repo 地址：[ :link: zackertypical / ios_script](https://github.com/zackertypical/ios_script)**
 
 <div style="position: relative; padding: 30% 45%;">
 	<iframe 
@@ -758,7 +763,10 @@ widget.backgroundColor = Color.dynamic(
 //跳转到 Safari 浏览器打开网页
 //Safari.open('https://news.dodolo.top');
 //在 app 内全屏打开网页
-Safari.openInApp('https://news.dodolo.top', true);
+
+// 服务器到期了，直接使用阮一峰老师的链接
+// Safari.openInApp('https://news.dodolo.top', true);
+Safari.openInApp('https://ruanyf.github.io/sina-news', true);
 //设置组件
 Script.setWidget(widget);
 
