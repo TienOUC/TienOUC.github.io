@@ -1,6 +1,6 @@
 ---
 autoGroup-2: 趣味应用
-title: Scriptable
+title: 使用 Scriptable DIY 好玩的 iOS 组件
 date: 2021-10-03
 isTimeLine: true
 sticky: 1
