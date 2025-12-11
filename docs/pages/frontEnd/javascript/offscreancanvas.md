@@ -1,3 +1,14 @@
+---
+autoGroup-5: 其他
+title: OffscreenCanvas
+date: 2025-12-10
+categories:
+  - FrontEnd
+tags:
+  - JavaScript
+  - Canvas
+---
+
 # 一、OffscreenCanvas 是什么？
 
 [MDN-OffscreenCanvas](https://developer.mozilla.org/zh-CN/docs/Web/API/OffscreenCanvas)
